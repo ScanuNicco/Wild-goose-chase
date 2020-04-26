@@ -459,7 +459,7 @@ function checkRatio() {
 	var screenH = document.documentElement.clientHeight;
 	if (screenH > screenW) {
 		document.getElementById("gamepiece").style.width = "2.5vh";
-		document.getElementById("gamepiece").style.height = "2.5vh";
+		document.getElementById("gamepiece").style.height = "1.5vh";
 		var obstacle = document.getElementsByClassName('obstacle');
 		for (i = 0; i < obstacle.length; i++) {
 			obstacle[i].style.width = "5vh";
@@ -472,7 +472,7 @@ function checkRatio() {
 		}
 	} else {
 		document.getElementById("gamepiece").style.width = "2.5vw";
-		document.getElementById("gamepiece").style.height = "2.5vw";
+		document.getElementById("gamepiece").style.height = "1.5vw";
 		var obstacle = document.getElementsByClassName('obstacle');
 		for (i = 0; i < obstacle.length; i++) {
 			obstacle[i].style.width = "5vw";
