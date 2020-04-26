@@ -539,7 +539,7 @@ setTimeout(function () {
 
 function showHitboxes() {
 	for (i = 0; i < 10; i++) {
-		document.getElementsByClassName('obstacle')[i].style.outline = "solid thin blue";
+		document.getElementsByClassName('obstacle')[i].style.border = "solid thin blue";
 	}
-	document.getElementById("gamepiece").style.outline = "solid thin black";
+	document.getElementById("gamepiece").style.border = "solid thin black";
 }
