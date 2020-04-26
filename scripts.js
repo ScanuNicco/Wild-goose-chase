@@ -1,22 +1,21 @@
-var horizontalPos = 0; //horizontal position of player
-var verticalPos = 0; //vertical position of player
-var alive = 0; //the number of lives the player has left
-var score = 0; //the number of points the player has
-var highScore = 0; //the highest score the player has achieved
-var active = true; //whether the game is running or not
-var forwardSpeed = 0; //speed in px/ms (pixels per millisecond) to move forward (up)
-var backSpeed = 0; //speed in px/ms to move back (down)
-var leftSpeed = 0; //speed in px/ms to move left
-var rightSpeed = 0; //speed in px/ms to move right
-var active = false; //if the game is active, off until game starts
-var hit = false; //if the block has been hit
-var blockSpeed = 1; //speed the blocks move, in px/ms
-var speed = 1.25; //speed of block in px/ms
-var y = 0; //position of gamepiece vertically
-var x = 0; //position of gp horizontally
-var hitActive = true; //if the obstacles hit the gamepiece
-var battery = 70; //Amount of battery that the drone has (0 - 70)
-var hsLocal = false; //Store highscore locally instead of on your Scanu Productions account.
+let horizontalPos = 0; //horizontal position of player
+let verticalPos = 0; //vertical position of player
+let alive = 0; //the number of lives the player has left
+let score = 0; //the number of points the player has
+let highScore = 0; //the highest score the player has achieved\
+let forwardSpeed = 0; //speed in px/ms (pixels per millisecond) to move forward (up)
+let backSpeed = 0; //speed in px/ms to move back (down)
+let leftSpeed = 0; //speed in px/ms to move left
+let rightSpeed = 0; //speed in px/ms to move right
+let active = false; //if the game is active, off until game starts
+let hit = false; //if the block has been hit
+let blockSpeed = 0.5; //speed the blocks move, in px/ms
+let speed = 1.25; //speed of block in px/ms
+let y = 0; //position of gamepiece vertically
+let x = 0; //position of gp horizontally
+let hitActive = true; //if the obstacles hit the gamepiece
+let battery = 70; //Amount of battery that the drone has (0 - 70)
+let hsLocal = false; //Store highscore locally instead of on your Scanu Productions account.
 //If the user has previously toggled the local highscore switch, set hsLocal to true
 if (localStorage.getItem('useHSL') == "true") {
 	hsLocal = true;
@@ -54,14 +53,14 @@ document.getElementById("gamepiece").style.left = horizontalPos;
 document.getElementById("aliveDisplay").innerHTML = alive;
 document.getElementById("scoreDisplay").innerHTML = score;
 //According to W3Schools, acessing the HTML DOM is one of the slowest things in JavaScript so accesing it only once when the page loads is faster.
-var obs = document.getElementsByClassName('obstacle');
-var pwu = document.getElementById('speed');
-var pwu2 = document.getElementById('sheild');
-var pwu3 = document.getElementById('small');
-var pwu4 = document.getElementById('add');
-var livesDisplay = document.getElementById('aliveDisplay');
-var hitMenuLivesDisplay = document.getElementById('hitAliveDisplay');
-var gp = document.getElementById('gamepiece'); //gets the gamepiece item
+let obs = document.getElementsByClassName('obstacle');
+let pwu = document.getElementById('speed');
+let pwu2 = document.getElementById('sheild');
+let pwu3 = document.getElementById('small');
+let pwu4 = document.getElementById('add');
+let livesDisplay = document.getElementById('aliveDisplay');
+let hitMenuLivesDisplay = document.getElementById('hitAliveDisplay');
+let gp = document.getElementById('gamepiece'); //gets the gamepiece item
 function isTouching(r1, r2) { //returns true if the two parameter elements are touching each other
 	return !(r2.offsetLeft > r1.offsetLeft + r1.offsetWidth ||
 		r2.offsetLeft + r2.offsetWidth < r1.offsetLeft ||
@@ -69,7 +68,12 @@ function isTouching(r1, r2) { //returns true if the two parameter elements are t
 		r2.offsetTop + r2.offsetHeight < r1.offsetTop);
 }
 
-function update() { //runs every four milliseconds
+let lastUpdate = performance.now();
+
+function update(timeCalled) { //runs every four milliseconds
+   let delta = timeCalled - lastUpdate;
+   lastUpdate = timeCalled;
+
 	if (active) { //if the game is started
 		if (gp.offsetTop + gp.offsetHeight > window.innerHeight) {
 			backSpeed = 0;
@@ -83,13 +87,13 @@ function update() { //runs every four milliseconds
 		if (gp.offsetLeft + gp.offsetWidth > window.innerWidth) { //these ifs check if the gamepiece is touching the sides and stops it
 			rightSpeed = 0;
 		}
-		y += forwardSpeed - backSpeed;
-		x += rightSpeed - leftSpeed; //moves the block's position (x and y) by the movement speed in each direction
+		y += (forwardSpeed - backSpeed) * delta;
+		x += (rightSpeed - leftSpeed) * delta; //moves the block's position (x and y) by the movement speed in each direction
 
 
 		gp.style.bottom = y + 'px';
-		gp.style.left = x + 'px'; //actually sets the position from the vars
-		moveBlock(); //moves the blocks
+		gp.style.left = x + 'px'; //actually sets the position from the lets
+		moveBlock(delta); //moves the blocks
 		blockSpeed += .001; //Slowly increases the speed of the blocks as the user plays more
 		speed += .001;
 		battery -= .01;
@@ -148,8 +152,10 @@ function update() { //runs every four milliseconds
 		}
 
 	}
+   window.requestAnimationFrame(update);
 }
-setInterval(update, 10); //run the update function from earlier every ten milliseconds (100fps)
+
+
 
 document.addEventListener("keydown", function (event) { // runs when any key is down (not released) when the key is pressed, set the speed to 1 px/ms
 	if (event.key == 's') { // if 's' is pressed, doesnt work on some browsers (!), maybe switch to event.which in future update?
@@ -187,7 +193,7 @@ document.addEventListener("keyup", function (event) { // stop when the key is re
 	}
 });
 
-var mode = 1;
+let mode = 1;
 
 function startGame() {
 	document.getElementById("startmenu").style.display = "none"; //Hide the main menu
@@ -197,7 +203,7 @@ function startGame() {
 	score = 0000; //Reset Score
 	document.getElementById("scoreDisplay").innerHTML = score; //Update displays
 	document.getElementById("highScoreDisplay").innerHTML = highScore;
-	horizontalPos = 0; //Reset position variables and apply them
+	horizontalPos = 0; //Reset position letiables and apply them
 	verticalPos = 0;
 	document.getElementById("gamepiece").style.bottom = verticalPos * 20;
 	document.getElementById("gamepiece").style.left = horizontalPos * 20;
@@ -206,7 +212,7 @@ function startGame() {
 	sheild = false;
 
 	//Determine difficulty based on slider input
-	var userInput = document.getElementById('difficultyInput').value;
+	let userInput = document.getElementById('difficultyInput').value;
 	if (userInput == 0) {
 		alive = 1;
 		blockSpeed = 5;
@@ -225,6 +231,8 @@ function startGame() {
 	document.getElementById("aliveDisplay").innerHTML = alive;
 	document.getElementById("hitAliveDisplay").innerHTML = alive;
 	document.getElementById("diffDisplay").innerHTML = diff;
+
+	requestAnimationFrame(update);
 }
 
 function endGame() {
@@ -247,14 +255,14 @@ function endGame() {
 }
 
 //set the starting position of the blocks
-var screenW = document.documentElement.clientWidth;
-var screenH = document.documentElement.clientHeight;
-var blockPos = []; //Make an empty array
+let screenW = document.documentElement.clientWidth;
+let screenH = document.documentElement.clientHeight;
+let blockPos = []; //Make an empty array
 for (i = 0; i < 10; i++) {
 	blockPos[i] = Math.floor(Math.random() * screenW) + 1; //Fill the array with 10 random numbers from 0 to screenW
 	document.getElementsByClassName('obstacle')[i].style.bottom = Math.floor(Math.random() * screenH) + 1;
 }
-var powPos = [{
+let powPos = [{
 	pos: 60 * 20,
 	mult: 2,
 	name: "speed"
@@ -276,12 +284,12 @@ var powPos = [{
 	name: "batteryUp"
 }]
 
-function moveBlock() {
-	//Lower the block position variables
+function moveBlock(delta) {
+	//Lower the block position letiables
 	for (i = 0; i < blockPos.length; i++) {
-		blockPos[i] -= blockSpeed + (i / 5);
-		document.getElementsByClassName('obstacle')[i].style.left = blockPos[i];
-		if (blockPos[i] < 0) {
+		blockPos[i] += (blockSpeed + (i / 50)) * delta;
+		document.getElementsByClassName('obstacle')[i].style.transform = "translate(-" + blockPos[i] + "px, 0)";
+		if (blockPos[i] > document.documentElement.clientWidth) {
 			resetBlock(i);
 		}
 	}
@@ -309,26 +317,26 @@ function moveBlock() {
 
 function resetBlock(blockN) {
 	//Get the dimensions of the screen
-	var screenWidth = document.documentElement.clientWidth;
-	var screenHeight = document.documentElement.clientHeight - 20;
+	let screenWidth = document.documentElement.clientWidth;
+	let screenHeight = document.documentElement.clientHeight - 20;
 	//Set the blocks position to the right side of the screen and randomize the vertical position
-	var BlockPos = screenWidth;
+	let BlockPos = screenWidth;
 	BlockVPos = Math.floor(Math.random() * screenHeight) - screenHeight * (3.5 / 100);
 	//Apply the new position to the block
-	document.getElementsByClassName('obstacle')[i].style.left = BlockPos;
+	document.getElementsByClassName('obstacle')[i].style.transform = "translate(0,0)";
 	document.getElementsByClassName('obstacle')[i].style.bottom = BlockVPos;
 	//Add one to the score
 	score += Number(speed);
 	document.getElementById("scoreDisplay").innerHTML = Math.floor(score);
-	blockPos[blockN] = BlockPos;
+	blockPos[blockN] = 0;
 }
 
 function resetPow(powN) {
 	//Get the dimensions of the screen
-	var screenWidth = document.documentElement.clientWidth;
-	var screenHeight = document.documentElement.clientHeight - 20;
+	let screenWidth = document.documentElement.clientWidth;
+	let screenHeight = document.documentElement.clientHeight - 20;
 	//Set the blocks position to the right side of the screen and randomize the vertical position
-	var PowPos = screenWidth * powPos[powN]['mult'];
+	let PowPos = screenWidth * powPos[powN]['mult'];
 	PowVPos = Math.floor(Math.random() * screenHeight) - screenHeight * (3.5 / 100);
 	//Apply the new position to the block
 	document.getElementById(powPos[powN]['name']).style.left = PowPos;
@@ -430,8 +438,8 @@ function darkTheme() {
 	document.getElementById("game").style.background = "url('images/skydark.jpg')";
 	document.getElementById("aliveDisplayContainer").style.color = "white";
 	document.getElementById("openButton").style.color = "white";
-	var c = document.body.children;
-	for (var i = 0; i < c.length; i++) {
+	let c = document.body.children;
+	for (let i = 0; i < c.length; i++) {
 		c[i].style.cursor = "url(https://scanuproductions.com/images/white-pointer.png) 5 5, crosshair";
 	}
 }
@@ -440,8 +448,8 @@ function lightTheme() {
 	document.getElementById("game").style.background = "url('images/sky.jpg')";
 	document.getElementById("aliveDisplayContainer").style.color = "black";
 	document.getElementById("openButton").style.color = "black";
-	var c = document.body.children;
-	for (var i = 0; i < c.length; i++) {
+	let c = document.body.children;
+	for (let i = 0; i < c.length; i++) {
 		c[i].style.cursor = "url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair";
 	}
 }
@@ -455,17 +463,17 @@ function toggleThemes() {
 }
 
 function checkRatio() {
-	var screenW = document.documentElement.clientWidth;
-	var screenH = document.documentElement.clientHeight;
+	let screenW = document.documentElement.clientWidth;
+	let screenH = document.documentElement.clientHeight;
 	if (screenH > screenW) {
 		document.getElementById("gamepiece").style.width = "2.5vh";
 		document.getElementById("gamepiece").style.height = "2.5vh";
-		var obstacle = document.getElementsByClassName('obstacle');
+		let obstacle = document.getElementsByClassName('obstacle');
 		for (i = 0; i < obstacle.length; i++) {
 			obstacle[i].style.width = "5vh";
 			obstacle[i].style.height = "5vh";
 		}
-		var powerUp = document.getElementsByClassName('puGeneric');
+		let powerUp = document.getElementsByClassName('puGeneric');
 		for (i = 0; i < powerUp.length; i++) {
 			powerUp[i].style.width = "4vh";
 			powerUp[i].style.height = "4vh";
@@ -473,12 +481,12 @@ function checkRatio() {
 	} else {
 		document.getElementById("gamepiece").style.width = "2.5vw";
 		document.getElementById("gamepiece").style.height = "2.5vw";
-		var obstacle = document.getElementsByClassName('obstacle');
+		let obstacle = document.getElementsByClassName('obstacle');
 		for (i = 0; i < obstacle.length; i++) {
 			obstacle[i].style.width = "5vw";
 			obstacle[i].style.height = "5vw";
 		}
-		var powerUp = document.getElementsByClassName('puGeneric');
+		let powerUp = document.getElementsByClassName('puGeneric');
 		for (i = 0; i < powerUp.length; i++) {
 			powerUp[i].style.width = "4vw";
 			powerUp[i].style.height = "4vw";
@@ -493,7 +501,7 @@ function noSupport(reason) {
 }
 
 async function callPHP(url, params) {
-	var httpc = new XMLHttpRequest(); // simplified for clarity
+	let httpc = new XMLHttpRequest(); // simplified for clarity
 	httpc.open("POST", url, true); // sending as POST
 	httpc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	let promise = new Promise((resolve, reject) => {
@@ -526,16 +534,6 @@ function toggleHSL() {
 		}
 	}
 }
-
-setTimeout(function () {
-	if (highScore > 0) {
-		//User has played game before, don't play intro
-		document.getElementById('intro').style.display = 'none';
-	} else { //user has not played game before, play intro
-		document.getElementById('intro').style.display = 'block';
-		document.getElementById('introVideo').play();
-	}
-}, 500);
 
 function showHitboxes() {
 	for (i = 0; i < 10; i++) {
