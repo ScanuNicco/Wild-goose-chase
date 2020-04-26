@@ -4,7 +4,9 @@
 	background-position: 2px -5px;
 	width: 2.5vw;
 	position: absolute;
+	transform: scaleX(-1);
 	z-index: -1;
+	border-radius: 15px;
 }
 
 #startmenu {
@@ -206,6 +208,10 @@ body {
 	transform: scaleX(-1);
 	z-index: -1;
 	position: absolute;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 5px;
 }
 
 /* Styles that apply to all powerups */
