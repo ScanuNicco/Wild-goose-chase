@@ -97,7 +97,7 @@ function update() { //runs every four milliseconds
 		if (battery < 0) {
 			Hit(1);
 		}
-		if (hitActive == true) {
+		if (hitActive == true) { //If the player does not have invulnerability.
 			for (i = 0; i < obs.length; i++) { //iterates through all obstacles
 				if (isTouching(document.getElementsByClassName('obstacle')[i], document.getElementById('gamepiece'))) { //if the obstacle touches the gamepiece
 					if (sheild) {
@@ -343,9 +343,9 @@ function Hit(why) {
 	document.getElementById("hitMenu").style.display = "block";
 	hitActive = false;
 	if (why == 0) {
-		document.getElementById("whyDisplay").innerHTML = "You got hit";
+		document.getElementById("whyDisplay").innerHTML = "You've Been Hit!";
 	} else if (why == 1) {
-		document.getElementById("whyDisplay").innerHTML = "Out of battery";
+		document.getElementById("whyDisplay").innerHTML = "Out Of Battery!";
 		battery = 40;
 	}
 }
@@ -375,7 +375,7 @@ function showSection(sectionID) {
 	document.getElementById(sectionID).style.display = "block";
 }
 
-//hidea section on the menu
+//hide a section on the menu
 function hideSection(sectionID) {
 	document.getElementById('mainSection').style.display = "block";
 	document.getElementById(sectionID).style.display = "none";
@@ -488,7 +488,7 @@ function checkRatio() {
 
 function noSupport(reason) {
 	document.getElementById("supportMenu").style.display = "block";
-	document.getElementById("errorDisplay").innerHTML = "Sorry, you cannot play Nicco's Game 2 because your browser does not support " + reason + ". Make sure you are using an up to date version of Chrome or Firefox.";
+	document.getElementById("errorDisplay").innerHTML = "Sorry, you cannot play Wild Goose Chase because your browser does not support " + reason + ". Make sure you are using an up to date version of Chrome or Firefox.";
 	document.getElementById("startmenu").style.display = "none";
 }
 
