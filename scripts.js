@@ -43,7 +43,7 @@ window.onload = function () {
 				document.getElementById("hsDispMain").innerHTML = "Signed in as: " + localStorage.getItem("ScanProdNi") + ", Highscore: " + value;
 			});
 		} else {
-			document.getElementById("hsDispMain").innerHTML = "Not signed in, <a href='/accounts'>Sign In Now</a>";
+			document.getElementById("hsDispMain").innerHTML = "Not signed in, <a href='#' onclick="location.href = '/accounts/login.html?afterlogin=' + location.href">Sign In Now</a>";
 		}
 
 	}
