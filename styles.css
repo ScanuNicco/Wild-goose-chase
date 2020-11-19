@@ -16,7 +16,7 @@
 	margin: auto;
 	font-family: 'IBM Plex Sans', sans-serif;
 	color: black;
-	z-index: 13;
+	z-index: 999;
 	padding: 10px;
 	padding-top: 28vh;
 	display: block;
@@ -35,7 +35,7 @@
 	width: 350px;
 	font-family: 'IBM Plex Sans', sans-serif;
 	color: white;
-	z-index: 13;
+	z-index: 1000;
 	padding: 10px;
 	display: none;
 	box-shadow: 10px 10px 5px rgba(0, 0, 0, .6);
@@ -53,7 +53,7 @@
 	width: 900px;
 	font-family: 'IBM Plex Sans', sans-serif;
 	color: white;
-	z-index: 13;
+	z-index: 1001;
 	padding: 10px;
 	display: block;
 	box-shadow: 10px 10px 5px rgba(0, 0, 0, .6);

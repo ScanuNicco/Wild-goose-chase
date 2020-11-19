@@ -64,10 +64,12 @@ var livesDisplay = document.getElementById('aliveDisplay');
 var hitMenuLivesDisplay = document.getElementById('hitAliveDisplay');
 var gp = document.getElementById('gamepiece'); //gets the gamepiece item
 function isTouching(r1, r2) { //returns true if the two parameter elements are touching each other
-	return !(r2.getBoundingClientRect().left > r1.getBoundingClientRect().left + r1.offsetWidth ||
-		r2.getBoundingClientRect().left + r2.offsetWidth < r1.getBoundingClientRect().left ||
-		r2.getBoundingClientRect().top > r1.getBoundingClientRect().top + r1.offsetHeight ||
-		r2.getBoundingClientRect().top + r2.offsetHeight < r1.getBoundingClientRect().top);
+	var r1box = r1.getBoundingClientRect();
+	var r2box = r2.getBoundingClientRect();
+	return !(r2box.left > r1box.left + r1.offsetWidth ||
+		r2box.left + r2.offsetWidth < r1box.left ||
+		r2box.top > r1box.top + r1.offsetHeight ||
+		r2box.top + r2.offsetHeight < r1box.top);
 }
 
 function update() { //runs every ten milliseconds
