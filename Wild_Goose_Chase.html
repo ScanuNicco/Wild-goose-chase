@@ -26,6 +26,9 @@
 			<p id="diffDisplay" class="stats">medium (default)</p>
 		</div>
 	</div>
+	<div id="footer">
+	<div id="powerUpsDisplay"></div>
+	</div>
 	<div id="gamepiece">
 		<br>
 
@@ -38,7 +41,7 @@
 		<div id="startmenu">
 			<div id="mainSection">
 				<h1>Welcome to Wild Goose Chase</h1>
-				<p>Version 1.03</p>
+				<p>Version 1.1</p>
 
 				<p id="youDiedMessage"></p>
 				<input id="difficultyInput" type="range" min="0" max="2"><br>
@@ -53,7 +56,7 @@
 				<a class="menuLink" onclick="showSection(&#39;theDifference&#39;)">What's New In Nicco's Game 2</a><br>
 			</div>
 			<div id="instructions" class="menuSection">Oh No! You have flown your drone into a flock of canadian geese! Use W A S D controls to steer your drone through the flock. Make sure you don't run out of battery or you will lose a life. Red power ups are bayonet, purple is speed, light blue is shrink, and green will recharge your battery. Keep an eye out for the rainbow power up as acquiring it will award you an extra life. How far can you go before a goose kills your drone? <br> <button onclick="hideSection('instructions')" class="menuButton">Back</button></div>
-			<div id="theDifference" class="menuSection"><b>Version 1.0</b><br>Made the Game<br><button onclick="hideSection('theDifference')" class="menuButton">Back</button></div>
+			<div id="theDifference" class="menuSection"><b>Version 1.1</b><br>Improved hitboxes, reworked power-up system, code optomization, added blur.<br><b>Versions 1.01 - 1.03</b><br>Code Optimization<br><b>Version 1.0</b><br>Made the Game<br><button onclick="hideSection('theDifference')" class="menuButton">Back</button></div>
 			<div id="options" class="menuSection">
 				<button onclick="showHitboxes()" class="menuButton">Show Hitboxes</button>
 				<h3>Dark Theme</h3>
@@ -82,11 +85,11 @@
 	<div class="obstacle"></div>
 	<div class="obstacle"></div>
 	<div class="obstacle"></div>
-	<div id="speed" class="puGeneric"></div>
-	<div id="sheild" class="puGeneric"></div>
-	<div id="small" class="puGeneric"></div>
-	<div id="add" class="puGeneric"><img src="https://scanuproductions.com/images/+1life.png" style="width: 100%; border: none;"></div>
-	<div id="batteryUp" class="puGeneric"></div>
+	<div class="puContainer"><img class="parachute" src="images/parachute.png"><div id="speed" class="puGeneric"></div></div>
+	<div class="puContainer"><img class="parachute" src="images/parachute.png"><div id="sheild" class="puGeneric"></div></div>
+	<div class="puContainer"><img class="parachute" src="images/parachute.png"><div id="small" class="puGeneric"></div></div>
+	<div class="puContainer"><img class="parachute" src="images/parachute.png"><div id="add" class="puGeneric"><img src="https://scanuproductions.com/images/+1life.png" style="width: 100%; border: none;"></div></div>
+	<div class="puContainer"><img class="parachute" src="images/parachute.png"><div id="batteryUp" class="puGeneric"></div></div>
 
 	<div class="center">
 		<div id="intro" style="display: none;">

@@ -1,7 +1,7 @@
 #gamepiece {
 	background: url('https://scanuproductions.com/images/drone.png');
 	background-size: cover;
-	background-position: 2px -5px;
+	background-position: 2px 0px;
 	width: 2.5vw;
 	position: absolute;
 	transform: scaleX(-1);
@@ -182,13 +182,42 @@ body {
 }
 
 #aliveDisplayContainer {
-	background: rgba(0, 0, 0, .6);
+	background: rgba(0, 0, 0, .4);
 	display: block;
 	width: 700px;
 	text-align: center;
 	margin: auto;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
+	backdrop-filter: blur(5px);
+}
+
+#footer {
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	align-content: center;
+}
+
+#powerUpsDisplay {
+	background: rgba(0, 0, 0, .6);
+	display: block;
+	width: 700px;
+	text-align: center;
+	margin: auto;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	backdrop-filter: blur(5px);
+}
+
+#powerUpsDisplay p{
+	display: inline-block;
+	margin: 5px;
+	font-family: arial;
+	color: white;
+	font-size: 16;
+	font-weight: bold;
 }
 
 .stats {
@@ -218,10 +247,11 @@ body {
 .puGeneric {
 	height: 4vw;
 	width: 4vw;
-	position: absolute;
 	background-size: contain;
 	background: black;
-	z-index: -1;
+	position: absolute;
+	bottom: 0px;
+	left: 2vw;
 }
 
 .threeD {
@@ -371,8 +401,9 @@ body {
 #difficultyInput::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	width: 100px;
-	height: 100px;
+	height: 50px;
 	background: url('https://scanuproductions.com/images/drone.png');
+	background-repeat: no-repeat;
 	cursor: pointer;
 	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
 	margin: 0px;
@@ -384,6 +415,7 @@ body {
 	width: 40px;
 	height: 40px;
 	background: url('https://scanuproductions.com/images/drone.png'), black;
+	background-repeat: no-repeat;
 	cursor: pointer;
 	cursor: url(https://scanuproductions.com/images/pointer.png) 5 5, crosshair;
 	margin: 0px;
@@ -494,4 +526,14 @@ input:checked + .slider:before {
 	left: 33px;
 	bottom: 10px;
 	border-radius: 3px;
+}
+
+.puContainer {
+	position: absolute;
+	width: 8vw;
+	height: 12vw;
+}
+
+.parachute {
+	width: 100%;
 }

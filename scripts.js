@@ -17,6 +17,7 @@ var x = 0; //position of gp horizontally
 var hitActive = true; //if the obstacles hit the gamepiece
 var battery = 70; //Amount of battery that the drone has (0 - 70)
 var hsLocal = false; //Store highscore locally instead of on your Scanu Productions account.
+var powerups = [{"name":"Speed", "active":false, "time":0, "end":endSpeed}, {"name":"Shrink", "active":false, "time":0, "end":endShrink}, {"name":"Bayonet", "active":false, "time":0, "end":endSheild}];
 //If the user has previously toggled the local highscore switch, set hsLocal to true
 if (localStorage.getItem('useHSL') == "true") {
 	hsLocal = true;
@@ -63,13 +64,13 @@ var livesDisplay = document.getElementById('aliveDisplay');
 var hitMenuLivesDisplay = document.getElementById('hitAliveDisplay');
 var gp = document.getElementById('gamepiece'); //gets the gamepiece item
 function isTouching(r1, r2) { //returns true if the two parameter elements are touching each other
-	return !(r2.offsetLeft > r1.offsetLeft + r1.offsetWidth ||
-		r2.offsetLeft + r2.offsetWidth < r1.offsetLeft ||
-		r2.offsetTop > r1.offsetTop + r1.offsetHeight ||
-		r2.offsetTop + r2.offsetHeight < r1.offsetTop);
+	return !(r2.getBoundingClientRect().left > r1.getBoundingClientRect().left + r1.offsetWidth ||
+		r2.getBoundingClientRect().left + r2.offsetWidth < r1.getBoundingClientRect().left ||
+		r2.getBoundingClientRect().top > r1.getBoundingClientRect().top + r1.offsetHeight ||
+		r2.getBoundingClientRect().top + r2.offsetHeight < r1.getBoundingClientRect().top);
 }
 
-function update() { //runs every four milliseconds
+function update() { //runs every ten milliseconds
 	if (active) { //if the game is started
 		if (gp.offsetTop + gp.offsetHeight > window.innerHeight) {
 			backSpeed = 0;
@@ -115,17 +116,14 @@ function update() { //runs every four milliseconds
 
 			if (isTouching(document.getElementById('speed'), document.getElementById('gamepiece'))) {
 				startSpeed();
-				setTimeout(endSpeed, 10000)
 			}
 
 			if (isTouching(document.getElementById('sheild'), document.getElementById('gamepiece'))) {
 				startSheild();
-				setTimeout(endSheild, 10000)
 			}
 
 			if (isTouching(document.getElementById('small'), document.getElementById('gamepiece'))) {
 				startShrink();
-				setTimeout(endShrink, 10000)
 			}
 
 			if (isTouching(document.getElementById('add'), document.getElementById('gamepiece'))) {
@@ -145,6 +143,19 @@ function update() { //runs every four milliseconds
 				}
 			}
 
+		}
+		document.getElementById("powerUpsDisplay").innerHTML = "";
+		for(i = 0; i < powerups.length; i++){
+			//Loop through the powerups array
+			if(powerups[i]["active"]){//If the poweup is active
+				powerups[i]["time"] -= 10;//Lower the time by 10 milliseconds
+				document.getElementById("powerUpsDisplay").innerHTML += "<p>" + powerups[i]["name"] + ": " + Math.floor(powerups[i]["time"] / 1000) + "s</p>";
+				if(powerups[i]["time"] < 0){
+					console.log("Ending " + powerups[i]["name"]);
+					powerups[i].end();//If there is no time left, call the end function
+					powerups[i]["active"] = false;
+				}
+			}
 		}
 
 	}
@@ -192,6 +203,8 @@ var mode = 1;
 function startGame() {
 	document.getElementById("startmenu").style.display = "none"; //Hide the main menu
 	battery = 70;
+	speed = 1.25;
+	powerups = [{"name":"Speed", "active":false, "time":0, "end":endSpeed}, {"name":"Shrink", "active":false, "time":0, "end":endShrink}, {"name":"Bayonet", "active":false, "time":0, "end":endSheild}];
 	hitActive = false; //Give the player 3 seconds on invunerability
 	document.getElementById("gamepiece").style.opacity = "0.5";
 	score = 0000; //Reset Score
@@ -244,6 +257,14 @@ function endGame() {
 		callPHP('gooseChase/SaveHS.php', "email=" + localStorage.getItem("ScanProdUN") + "&pw=" + localStorage.getItem("ScanProdPW") + "&hs=" + Math.floor(score))
 
 	}
+	for(i = 0; i < powerups.length; i++){
+			//Loop through the powerups array
+			if(powerups[i]["active"]){//If the poweup is active
+				powerups[i]["time"] = 0;//Lower the time by 10 milliseconds
+				powerups[i].end();//If there is no time left, call the end function
+				powerups[i]["active"] = false;
+			}
+		}
 }
 
 //set the starting position of the blocks
@@ -288,7 +309,7 @@ function moveBlock() {
 
 	for (i = 0; i < powPos.length; i++) {
 		powPos[i]['pos'] -= blockSpeed;
-		document.getElementById(powPos[i]['name']).style.left = powPos[i]['pos'];
+		document.getElementsByClassName('puContainer')[i].style.left = powPos[i]['pos'];
 		if (powPos[i]['pos'] < 0) {
 			resetPow(i);
 		}
@@ -331,8 +352,8 @@ function resetPow(powN) {
 	var PowPos = screenWidth * powPos[powN]['mult'];
 	PowVPos = Math.floor(Math.random() * screenHeight) - screenHeight * (3.5 / 100);
 	//Apply the new position to the block
-	document.getElementById(powPos[powN]['name']).style.left = PowPos;
-	document.getElementById(powPos[powN]['name']).style.bottom = PowVPos;
+	document.getElementsByClassName('puContainer')[powN].style.left = PowPos;
+	document.getElementsByClassName('puContainer')[powN].style.bottom = PowVPos;
 	//Add one to the score
 	powPos[powN]['pos'] = PowPos;
 }
@@ -384,6 +405,8 @@ function hideSection(sectionID) {
 function startSpeed() {
 	speed += .5;
 	document.getElementById("gamepiece").style.borderBottom = "purple solid 5px";
+	powerups[0]["active"] = true;
+	powerups[0]["time"] = 10000;
 }
 
 function endSpeed() {
@@ -394,6 +417,8 @@ function endSpeed() {
 function startSheild() {
 	sheild = true;
 	document.getElementById("gamepiece").style.opacity = "0.5";
+	powerups[2]["active"] = true;
+	powerups[2]["time"] = 10000;
 }
 
 function endSheild() {
@@ -405,11 +430,12 @@ function startShrink() {
 	document.getElementById("gamepiece").style.width = "25";
 	document.getElementById("gamepiece").style.height = "25";
 	document.getElementById("gamepiece").style.borderBottom = "solid lightblue 5px";
+	powerups[1]["active"] = true;
+	powerups[1]["time"] = 10000;
 }
 
 function endShrink() {
-	document.getElementById("gamepiece").style.width = "3vw";
-	document.getElementById("gamepiece").style.height = "3vw";
+	document.getElementById("gamepiece").style.width = "2.5vw";
 	document.getElementById("gamepiece").style.borderBottom = "none";
 }
 
