@@ -333,26 +333,27 @@ function moveBlock() {
 function resetBlock(blockN) {
 	//Get the dimensions of the screen
 	var screenWidth = document.documentElement.clientWidth;
-	var screenHeight = document.documentElement.clientHeight - 20;
+	var screenHeight = window.innerHeight - (window.innerHeight / 20); //Subtract the height of one goose (5vh) so it isn't off-screen
 	//Set the blocks position to the right side of the screen and randomize the vertical position
-	var BlockPos = screenWidth;
-	BlockVPos = Math.floor(Math.random() * screenHeight) - screenHeight * (3.5 / 100);
+	var blockXPos = screenWidth;
+	blockYPos = Math.floor(Math.random() * screenHeight);
 	//Apply the new position to the block
-	document.getElementsByClassName('obstacle')[i].style.left = BlockPos;
-	document.getElementsByClassName('obstacle')[i].style.bottom = BlockVPos;
+	document.getElementsByClassName('obstacle')[i].style.left = blockXPos;
+	document.getElementsByClassName('obstacle')[i].style.bottom = blockYPos;
+	console.log(blockYPos);
 	//Add one to the score
 	score += Number(speed);
 	document.getElementById("scoreDisplay").innerHTML = Math.floor(score);
-	blockPos[blockN] = BlockPos;
+	blockPos[blockN] = blockXPos;
 }
 
 function resetPow(powN) {
 	//Get the dimensions of the screen
 	var screenWidth = document.documentElement.clientWidth;
-	var screenHeight = document.documentElement.clientHeight - 20;
+	var screenHeight = window.innerHeight - (window.innerHeight / 25); //Subtract the height of one power-up(4vh) so it isn't off-screen
 	//Set the blocks position to the right side of the screen and randomize the vertical position
 	var PowPos = screenWidth * powPos[powN]['mult'];
-	PowVPos = Math.floor(Math.random() * screenHeight) - screenHeight * (3.5 / 100);
+	PowVPos = Math.floor(Math.random() * screenHeight);
 	//Apply the new position to the block
 	document.getElementsByClassName('puContainer')[powN].style.left = PowPos;
 	document.getElementsByClassName('puContainer')[powN].style.bottom = PowVPos;
@@ -366,9 +367,9 @@ function Hit(why) {
 	document.getElementById("hitMenu").style.display = "block";
 	hitActive = false;
 	if (why == 0) {
-		document.getElementById("whyDisplay").innerHTML = "You've Been Hit!";
+		document.getElementById("whyDisplay").innerHTML = "You hit a Goose!";
 	} else if (why == 1) {
-		document.getElementById("whyDisplay").innerHTML = "Out Of Battery!";
+		document.getElementById("whyDisplay").innerHTML = "You Ran Out of Battery!";
 		battery = 40;
 	}
 }
